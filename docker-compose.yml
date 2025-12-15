@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: reservation_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgres://postgres:postgres@db:5432/reservation_db
+      NODE_ENV: production
+    depends_on:
+      - db
+    ports:
+      - "4000:4000"
+    command: sh -c "npm run db:migrate && npm run db:seed && npm run start"
+
+volumes:
+  dbdata:
