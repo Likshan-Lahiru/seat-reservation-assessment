@@ -5,20 +5,25 @@ import helmet from "helmet";
 import { routes } from "./routes";
 import { notFound } from "./middleware/notFound";
 import { errorHandler } from "./middleware/errorHandler";
+import { requestLogger } from "./middleware/requestLogger";
 
 export function createApp() {
-  const app = express();
+    const app = express();
 
-  app.use(helmet());
-  app.use(cors());
-  app.use(express.json({ limit: "1mb" }));
+    app.use(helmet());
+    app.use(cors());
+    app.use(express.json({ limit: "1mb" }));
 
-  app.get("/health", (_req, res) => res.json({ ok: true }));
 
-  app.use("/api", routes);
+    app.use(requestLogger);
 
-  app.use(notFound);
-  app.use(errorHandler);
+    app.get("/health", (_req, res) => res.json({ ok: true }));
 
-  return app;
+
+    app.use("/api", routes);
+
+    app.use(notFound);
+    app.use(errorHandler);
+
+    return app;
 }

@@ -20,6 +20,7 @@ export const createMovie: RequestHandler = async (req, res) => {
 };
 
 export const listMovies: RequestHandler = async (_req, res) => {
+    console.log("coming to list movies controller");
     const movies = await moviesService.listMovies();
     res.status(HttpStatus.OK).json(movies);
 };

@@ -12,3 +12,9 @@ export const createSeatSchema = z.object({
         label: z.string().min(1)
     })
 });
+
+export const listSeatsByShowSchema = z.object({
+    params: z.object({
+        showId: z.string().uuid()
+    })
+});

@@ -5,7 +5,11 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE TABLE theatres (
                           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                           name TEXT NOT NULL,
-                          created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+                          image_url TEXT,
+                          rating NUMERIC(2,1),
+                          location TEXT,
+                          created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                          CONSTRAINT theatres_rating_range CHECK (rating IS NULL OR (rating >= 0 AND rating <= 5))
 );
 
 CREATE TABLE seats (

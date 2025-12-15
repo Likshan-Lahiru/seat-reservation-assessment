@@ -4,6 +4,8 @@ import { pool } from "./db/pool";
 
 const PORT = Number(process.env.PORT ?? 4000);
 
+
+
 async function start() {
   await pool.query("SELECT 1");
   const app = createApp();
