@@ -8,11 +8,13 @@
     "dev": "nodemon",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
+    "postinstall": "npm run build",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit"
-  },
+  }
+,
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
