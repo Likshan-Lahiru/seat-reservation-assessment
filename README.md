@@ -73,6 +73,22 @@ Postman Docs:
 ```
 ```
 
+### Key design decisions
+- Clean layered structure (Controller → Service → Repository)
+- Dedicated modules for Movies, Theatres, Seats, Reservations
+- Design ErDiagram modeling real-world relationships
+- Zod for request validation
+- Consistent error format + mapped Postgres constraint errors
+- Async/non-blocking handlers
+- Pagination built-in for list endpoints
+- Single query aggregation where useful
+- Background cleanup job using node-cron
+- Comprehensive API documentation (Swagger + Postman)
+
+
+
+
+
 ## Architecture diagrams
 
 ```mermaid
