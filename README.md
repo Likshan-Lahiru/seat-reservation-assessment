@@ -73,7 +73,7 @@ Postman Docs:
 ```
 ```
 
-### Key design decisions
+## Key design decisions
 - Clean layered structure (Controller → Service → Repository)
 - Dedicated modules for Movies, Theatres, Seats, Reservations
 - Design ErDiagram modeling real-world relationships
@@ -86,7 +86,16 @@ Postman Docs:
 - Comprehensive API documentation (Swagger + Postman)
 
 
+## Future improvements
+- To better support the frontend, I would adapt my reservation flow using Firebase Realtime Database or WebSockets for live seat updates. When a user selects seats and moves to the proceed step, those seats would be marked as pending and pushed to Firebase in real time. Other users would instantly see the updated status and wouldn’t be able to select seats that are currently in the booking process.
 
+- I would implement a dedicated user management service, or integrate a managed provider such as Clerk or an Azure user management service.
+
+- I would improve scalability by introducing a proper load balancing setup.
+
+- I would implement stronger security using OAuth 2.0. All requests would be validated using access tokens, reducing risks like scraping, unauthorized access, and sensitive data leakage.
+
+- Finally, I would integrate a payment gateway to complete the end-to-end booking workflow.
 
 
 ## Architecture diagrams
