@@ -148,7 +148,7 @@ API --> Cron["Cron Job (Daily 00:05)\nCleanup expired reservations"]
 Cron --> PG
 ```
 
-## ErDiagram diagrams
+## ErDiagram
 
 ```mermaid
 erDiagram
@@ -218,4 +218,52 @@ USERS ||--o{ RESERVATIONS : makes
 RESERVATIONS ||--o{ RESERVATION_ITEMS : contains
 SHOWS        ||--o{ RESERVATION_ITEMS : for
 SEATS        ||--o{ RESERVATION_ITEMS : books
+```
+
+## Use-Case diagrams
+
+```mermaid
+flowchart TB
+%% --- Actors ---
+User(["👤 Customer / User"])
+Admin(["👤 Admin / Staff"])
+
+%% --- System Boundary ---
+subgraph System["BookMyTicket Reservation System"]
+UC1(("Browse movies"))
+UC2(("View movie shows\n(by date/time)"))
+UC3(("Browse theatres"))
+UC4(("View seats for a show\n(with reservation status)"))
+UC5(("Create reservation\n(book seat(s))"))
+UC6(("List reservations\n(filter + pagination)"))
+UC7(("Cancel reservation"))
+UC8(("Create theatre"))
+UC9(("Create seats"))
+UC10(("Create movie + generate shows"))
+UC11(("Cleanup expired reservations\n(cron job)"))
+end
+
+%% --- User relations ---
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+User --> UC7
+
+%% --- Admin relations ---
+Admin --> UC8
+Admin --> UC9
+Admin --> UC10
+
+%% --- Background job ---
+UC11 -. scheduled .-> System
+
+%% --- Includes / dependencies ---
+UC1 --> UC2
+UC2 --> UC4
+UC4 --> UC5
+UC5 --> UC6
+UC6 --> UC7
 ```
