@@ -32,43 +32,51 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     }
 
 
-    if (isPgError(err)) {
+    if (isPgError(err) && err.code === "23505") {
+        switch (err.constraint) {
+            case "reservation_items_show_id_seat_id_key":
+                return res.status(HttpStatus.CONFLICT).json({
+                    error: {
+                        code: "ALREADY_RESERVED",
+                        message: "These seat(s) are already booked for this show time."
+                    }
+                });
 
-        if (err.code === "23505") {
+            case "seats_theatre_id_label_key":
+                return res.status(HttpStatus.CONFLICT).json({
+                    error: {
+                        code: "SEAT_ALREADY_EXISTS",
+                        message: "A seat with this label already exists in the theatre."
+                    }
+                });
 
-            if (err.constraint === "seats_theatre_id_label_key") {
-                return res
-                    .status(HttpStatus.CONFLICT)
-                    .json(conflict("SEAT_ALREADY_EXISTS", "This seat label already exists in this theatre.", err));
-            }
+            case "users_email_key":
+                return res.status(HttpStatus.CONFLICT).json({
+                    error: {
+                        code: "EMAIL_ALREADY_EXISTS",
+                        message: "A user with this email already exists."
+                    }
+                });
 
+            case "users_nic_key":
+                return res.status(HttpStatus.CONFLICT).json({
+                    error: {
+                        code: "NIC_ALREADY_EXISTS",
+                        message: "A user with this NIC already exists."
+                    }
+                });
 
-            if (err.constraint === "users_email_key") {
-                return res
-                    .status(HttpStatus.CONFLICT)
-                    .json(conflict("USER_EMAIL_EXISTS", "A user with this email already exists.", err));
-            }
-
-
-            if (err.constraint === "users_nic_key") {
-                return res
-                    .status(HttpStatus.CONFLICT)
-                    .json(conflict("USER_NIC_EXISTS", "A user with this NIC already exists.", err));
-            }
-
-
-            if (err.constraint === "reservation_items_show_id_seat_id_key") {
-                return res
-                    .status(HttpStatus.CONFLICT)
-                    .json(conflict("ALREADY_RESERVED", "These seat(s) are already booked for this show time.", err));
-            }
-
-
-            return res
-                .status(HttpStatus.CONFLICT)
-                .json(conflict("DUPLICATE_RESOURCE", "Duplicate value violates a unique constraint.", err));
+            default:
+                return res.status(HttpStatus.CONFLICT).json({
+                    error: {
+                        code: "UNIQUE_VIOLATION",
+                        message: "Duplicate value violates a unique constraint.",
+                        details: { constraint: err.constraint, detail: err.detail }
+                    }
+                });
         }
     }
+
 
     console.error("Unhandled error:", err);
     return res.status(HttpStatus.INTERNAL).json({
