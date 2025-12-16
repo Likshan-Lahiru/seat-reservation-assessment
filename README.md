@@ -2,6 +2,22 @@
 # BookMyTicket – Reservation System API (Express + TypeScript + PostgreSQL)
 seat-reservation-assessment
 
+I selected the **movie theatre seat reservation system** scenario. This system handles **movies**, **theatres**, **shows**, **seats**, and **reservations** (seat + show time).
+
+### Why I chose this scenario:
+I chose this scenario because it is very relevant to real-world reservation system, and it allows me to handle **multiple resources**, not just a single resource.
+
+## Live Demo
+
+- Frontend (Vercel): https://seat-reservation-assessment-ui.vercel.app/
+
+- Frontend (GitHub): https://github.com/Likshan-Lahiru/seat-reservation-assessment-ui.git
+
+- Database: Neon Serverless PostgreSQL instance
+
+- Backend: Deployed on a cloud hosting provider (REST API)
+
+
 ## Tech Stack
 Node.js + Express + TypeScript, PostgreSQL, Zod validation, Helmet + CORS, Docker, node-cron, Postman documentation, Swagger documentation
 
@@ -97,6 +113,18 @@ Postman Docs:
 
 - Finally, I would integrate a payment gateway to complete the end-to-end booking workflow.
 
+
+
+## Trade-offs and assumptions
+- Reservations will be disabled 30 minutes before the movie start time.
+
+- Cancellation will be disabled 1 hour before the movie start time.
+
+- If a large volume of API requests comes in, I plan to handle it using rate limiting / load balancing to prevent overloading.
+
+- With Firebase Realtime Database seat status updates, the frontend can mark seats as temporarily unavailable during the proceed/checkout step. If a seat is locked/pending, the user will see a notice such as: “This seat is currently not available. Please check again after 30 minutes.”
+
+- I can also create an admin dashboard, so the system can be managed more easily by administrators.
 
 ## Architecture diagrams
 
